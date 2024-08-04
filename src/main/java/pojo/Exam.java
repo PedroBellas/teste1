@@ -3,18 +3,26 @@ package pojo;
 public class Exam {
 	private Integer id;
 	private String name;
-	private Character active;
-	private String descriptionExame;
-	private String descriptionExame1;
+	private Boolean active;
+	private String descriptionExam;
+	private String descriptionExam1;
 	
 	public Exam() {}
 	
-	public Exam(Integer id, String name, Character active, String descriptionExame, String descriptionExame1) {
+	public Exam(String name, String descriptionExam, String descriptionExam1) {
+		setId(null);
+		setName(name);
+		setActive(true);
+		setDescriptionExam(descriptionExam);
+		setDescriptionExam1(descriptionExam1);
+	}
+	
+	public Exam(Integer id, String name, Boolean active, String descriptionExam, String descriptionExam1) {
 		setId(id);
 		setName(name);
 		setActive(active);
-		setDescriptionExame(descriptionExame);
-		setDescriptionExame1(descriptionExame1);
+		setDescriptionExam(descriptionExam);
+		setDescriptionExam1(descriptionExam1);
 	}
 
 	public Integer getId() {
@@ -33,28 +41,28 @@ public class Exam {
 		this.name = name;
 	}
 
-	public Character getActive() {
+	public Boolean getActive() {
 		return active;
 	}
 
-	public void setActive(Character active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 
-	public String getDescriptionExame() {
-		return descriptionExame;
+	public String getDescriptionExam() {
+		return descriptionExam;
 	}
 
-	public void setDescriptionExame(String descriptionExame) {
-		this.descriptionExame = descriptionExame;
+	public void setDescriptionExam(String descriptionExame) {
+		this.descriptionExam = descriptionExame;
 	}
 
-	public String getDescriptionExame1() {
-		return descriptionExame1;
+	public String getDescriptionExam1() {
+		return descriptionExam1;
 	}
 
-	public void setDescriptionExame1(String descriptionExame1) {
-		this.descriptionExame1 = descriptionExame1;
+	public void setDescriptionExam1(String descriptionExame1) {
+		this.descriptionExam1 = descriptionExame1;
 	}
 	
 }
