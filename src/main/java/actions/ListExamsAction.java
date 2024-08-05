@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
-import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -13,7 +12,6 @@ import dao.ExamDaoImp;
 import pojo.Exam;
 import pojo.Pagination;
 
-@Namespace("/exame")
 public class ListExamsAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 	
@@ -72,9 +70,9 @@ public class ListExamsAction extends ActionSupport {
 		this.active = active;
 	}
 
-	@Action(value="/listar", 
+	@Action(value="/listarExames", 
 		results = { 
-			@Result(name="success", location="/exame/list.jsp"),
+			@Result(name="success", location="/exame/index.jsp"),
 			@Result(name="input", location="/"),
 		}
 	)
@@ -103,8 +101,12 @@ public class ListExamsAction extends ActionSupport {
 			
 			String currentPage = ServletActionContext.getRequest().getParameter("page");
 			
+			if (currentPage == null) {
+				currentPage = "1";
+			}
+			
 			Integer page = Integer.parseInt(currentPage);
-			Integer registries = ExamDaoImp.getQtyRegistries();
+			Integer registries = ExamDaoImp.getQtyRegistries(examParams);
 		
 			this.pagination.setCurrentPage(page);
 			this.pagination.setRegistries(registries);

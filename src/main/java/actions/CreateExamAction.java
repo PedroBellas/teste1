@@ -1,7 +1,6 @@
 package actions;
 
 import org.apache.struts2.convention.annotation.Action;
-import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -12,7 +11,6 @@ import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 import dao.ExamDaoImp;
 import pojo.Exam;
 
-@Namespace("/exame")
 @Validations(
 	requiredStrings = {
 		@RequiredStringValidator(type=ValidatorType.SIMPLE, fieldName="name", message="O nome do exame é obrigatorio")	
@@ -48,11 +46,11 @@ public class CreateExamAction extends ActionSupport {
 	public void setDescriptionExam1(String descriptionExam1) {
 		this.descriptionExam1 = descriptionExam1;
 	}
-
-	@Action(value="/create", 
+	
+	@Action(value="/criarExame", 
 		results = { 
-			@Result(name="success", location="/exame/listar"), 
-			@Result(name="input", location="/") 
+			@Result(name="success", location="/listarExames", type="redirect"), 
+			@Result(name="input", location="/exame/form.jsp") 
 		}
 	)
 	public String createExam() {
@@ -65,16 +63,5 @@ public class CreateExamAction extends ActionSupport {
 			System.out.println("erro: " + ex);
 			return INPUT;
 		}
-	}
-	
-	@Override
-	public void validate() {
-		/*if (!password.equals(passwordConfirmation)) {
-			addFieldError("passwordConfirmation", "As senhas não são iguais");
-		}
-		
-		if (userDao.checkUsernameExists(username)) {
-			addFieldError("username", "Nome de usuário já cadastrado");
-		}*/
 	}
 }

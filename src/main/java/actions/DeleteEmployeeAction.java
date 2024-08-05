@@ -6,22 +6,22 @@ import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import dao.ExamDaoImp;
+import dao.EmployeeDaoImp;
 
-public class DeleteExamAction extends ActionSupport {
+public class DeleteEmployeeAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
-	
-	@Action(value="/deletarExame",
+
+	@Action(value="/deletarFuncionario",
 		results = { 
-			@Result(name="success", location="/listarExames", type="redirect"),
-			@Result(name="input", location="/listarExames"),
+			@Result(name="success", location="/listarFuncionarios", type="redirect"),
+			@Result(name="input", location="/listarFuncionarios"),
 		}
 	)
-	public String deleteExam() {
+	public String deleteEmployee() {
 		try {
 			String id = ServletActionContext.getRequest().getParameter("id");
 			
-			ExamDaoImp.delete(Integer.parseInt(id));
+			EmployeeDaoImp.delete(Integer.parseInt(id));
 			
 			return SUCCESS;
 		} catch (Exception ex) {
