@@ -5,11 +5,11 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Exames</title>
+		<s:head />
 	</head>
-	<s:head />
 
 	<body>
-        <form class="d-flex flex-column" action="exame/create" method="POST">
+        <form class="d-flex flex-column" action="criarExame" method="POST">
             <s:textfield cssClass="d-flex flex-column" name="name" label="Nome do Exame" />
             
             <s:textarea cssClass="d-flex flex-column" name="descriptionExam" label="Descrição Principal" />
@@ -21,6 +21,6 @@
         
         <br />
 
-        <s:a href="listar?page=1">Listar</s:a>
+        <s:a href="listarExames">Voltar</s:a>
 	</body>
 </html>

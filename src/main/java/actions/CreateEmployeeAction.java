@@ -27,8 +27,9 @@ public class CreateEmployeeAction extends ActionSupport {
 		@Result(name="input", location="/funcionario/form.jsp") 
 	}
 )
-	public String createExam() {
+	public String createEmployee() {
 		try {
+			// TODO: Create a class to form validations
 			if (name == null || name.equals("")) {
 				addFieldError("name", "O nome do funcionário é obrigatorio");
 				return INPUT;

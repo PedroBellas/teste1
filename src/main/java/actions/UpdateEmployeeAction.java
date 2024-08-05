@@ -14,8 +14,6 @@ public class UpdateEmployeeAction extends ActionSupport {
 	
 	private Employee employee;
 
-	
-
 	public Employee getEmployee() {
 		return employee;
 	}
@@ -30,7 +28,7 @@ public class UpdateEmployeeAction extends ActionSupport {
 			@Result(name="input", location="/listarFuncionarios", type="redirect"),
 		}
 	)
-	public String getSelectedExam() {
+	public String getSelectedEmployee() {
 		try {
 			String id = ServletActionContext.getRequest().getParameter("id");
 			setEmployee(EmployeeDaoImp.findById(Integer.parseInt(id)));
@@ -48,7 +46,7 @@ public class UpdateEmployeeAction extends ActionSupport {
 			@Result(name="input", location="/funcionario/form-update.jsp"),
 		}
 	)
-	public String updateExam() {
+	public String updateEmployee() {
 		try {
 			// TODO: Create a class to form validations
 			if (employee.getName() == null || employee.getName().equals("")) {

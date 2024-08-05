@@ -48,7 +48,7 @@ public class ExamDaoImp {
 			
 			rs = stmt.executeQuery();
 			
-			return descompressUserObjectFromResultSet(rs);
+			return descompressExamObjectFromResultSet(rs);
 		} catch (SQLException ex) {
 			throw new RuntimeException(ex);
 		} finally {
@@ -56,14 +56,38 @@ public class ExamDaoImp {
 		}
 	}
 	
-	public static Integer getQtyRegistries() throws Exception {
+	public static List<Exam> findAllActives() throws Exception {
 		Connection con = ConnectionFactory.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql = new String("SELECT COUNT(cd_exame) AS quantidade FROM exame");
+		String sql = new String("SELECT cd_exame, nm_exame, ic_ativo, ds_detalhe_exame, ds_detalhe_exame1 FROM exame WHERE ic_ativo = 1 ORDER BY nm_exame ASC");
 
 		try {
 			stmt = con.prepareStatement(sql);
+			
+			rs = stmt.executeQuery();
+			
+			return descompressExamObjectFromResultSet(rs);
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			ConnectionFactory.closeConnection(con, stmt, rs);
+		}
+	}
+	
+	public static Integer getQtyRegistries(Exam exam) throws Exception {
+		Connection con = ConnectionFactory.getConnection();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			
+			if (exam.getName() != null) {
+				String sql = new String("SELECT COUNT(cd_exame) AS quantidade FROM exame WHERE UPPER(nm_exame) LIKE UPPER(?)");
+				stmt = generateSearchStatementByParams(stmt, con, exam, null, sql);
+			} else {
+				String sql = new String("SELECT COUNT(cd_exame) AS quantidade FROM exame");
+				stmt = con.prepareStatement(sql);
+			}
 			
 			rs = stmt.executeQuery();
 			
@@ -81,12 +105,12 @@ public class ExamDaoImp {
 		Connection con = ConnectionFactory.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		
+		String sql = new String("SELECT cd_exame, nm_exame, ic_ativo, ds_detalhe_exame, ds_detalhe_exame1 FROM exame WHERE UPPER(nm_exame) LIKE UPPER(?)");
 		try {
-			stmt = generateSearchStatementByParams(stmt, con, exam, pagination);
+			stmt = generateSearchStatementByParams(stmt, con, exam, pagination, sql);
 			rs = stmt.executeQuery();
 			
-			return descompressUserObjectFromResultSet(rs);
+			return descompressExamObjectFromResultSet(rs);
 		} catch (SQLException ex) {
 			throw new RuntimeException(ex);
 		} finally {
@@ -94,19 +118,41 @@ public class ExamDaoImp {
 		}
 	}
 	
-	public static void update(Exam user) throws Exception {
+	public static Exam findById(Integer id) throws Exception {
 		Connection con = ConnectionFactory.getConnection();
 		PreparedStatement stmt = null;
-		String sql = new String("UPDATE exame SET nm_exame = ?, ic_ativo = ?, ds_detalhe_exame = ?, ds_detalhe_exame1 = ? WHERE cd_exame = ?");
+		ResultSet rs = null;
+		String sql = new String("SELECT cd_exame, nm_exame, ic_ativo, ds_detalhe_exame, ds_detalhe_exame1 FROM exame WHERE cd_exame = ?");
 
 		try {
 			stmt = con.prepareStatement(sql);
+			
+			stmt.setInt(1, id);
+			
+			rs = stmt.executeQuery();
+			
+			return descompressExamObjectFromResultSet(rs).get(0);
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			ConnectionFactory.closeConnection(con, stmt, rs);
+		}
+	}
+	
 
-			stmt.setString(1, user.getName());
-			stmt.setBoolean(2, user.getActive());
-			stmt.setString(3, user.getDescriptionExam());
-			stmt.setString(4, user.getDescriptionExam1());
-			stmt.setInt(5, user.getId());
+	
+	public static void update(Exam exam) throws Exception {
+		Connection con = ConnectionFactory.getConnection();
+		PreparedStatement stmt = null;
+		String sql = new String("UPDATE exame SET nm_exame = ?, ic_ativo = ?, ds_detalhe_exame = ?, ds_detalhe_exame1 = ? WHERE cd_exame = ?");
+		try {
+			stmt = con.prepareStatement(sql);
+
+			stmt.setString(1, exam.getName());
+			stmt.setBoolean(2, exam.getActive());
+			stmt.setString(3, exam.getDescriptionExam());
+			stmt.setString(4, exam.getDescriptionExam1());
+			stmt.setInt(5, exam.getId());
 			
 			stmt.executeUpdate();
 		} catch (SQLException ex) {
@@ -134,7 +180,7 @@ public class ExamDaoImp {
 		}
 	}
 
-	private static List<Exam> descompressUserObjectFromResultSet(ResultSet rs) throws SQLException {
+	private static List<Exam> descompressExamObjectFromResultSet(ResultSet rs) throws SQLException {
 		List<Exam> exams = new ArrayList<Exam>();
 		while(rs.next()) {
 			Exam exam = new Exam(
@@ -150,9 +196,7 @@ public class ExamDaoImp {
 		return exams;
 	}
 	
-	
-	public static PreparedStatement generateSearchStatementByParams(PreparedStatement stmt, Connection con, Exam exam, Pagination pagination) throws SQLException {
-		String sql = new String("SELECT cd_exame, nm_exame, ic_ativo, ds_detalhe_exame, ds_detalhe_exame1 FROM exame WHERE UPPER(nm_exame) LIKE UPPER(?)");
+	public static PreparedStatement generateSearchStatementByParams(PreparedStatement stmt, Connection con, Exam exam, Pagination pagination, String sql) throws SQLException {
 		int qtyParams = 0;
 		
 		if (exam.getId() != null) {
@@ -163,7 +207,9 @@ public class ExamDaoImp {
 			sql = sql.concat(" AND ic_ativo = ? ");
 		}
 		
-		sql = sql.concat(" LIMIT ?, ?");
+		if (pagination != null) {
+			sql = sql.concat(" LIMIT ?, ?");
+		}
 		
 		stmt = con.prepareStatement(sql);
 		
@@ -181,10 +227,12 @@ public class ExamDaoImp {
 			stmt.setBoolean(qtyParams, exam.getActive());
 		}
 		
-		qtyParams++;
-		stmt.setInt(qtyParams, pagination.getMinRow());
-		qtyParams++;
-		stmt.setInt(qtyParams, pagination.getSize());
+		if (pagination != null) {
+			qtyParams++;
+			stmt.setInt(qtyParams, pagination.getMinRow());
+			qtyParams++;
+			stmt.setInt(qtyParams, pagination.getSize());
+		}
 		
 		return stmt;
 	}

@@ -1,8 +1,5 @@
 package pojo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Pagination {
 	private Integer size = 25;
 	private Integer currentPage;
@@ -45,15 +42,8 @@ public class Pagination {
 		this.registries = registries;
 	}
 	
-	public List<Integer> getQtypages() {
-		List<Integer> list = new ArrayList<Integer>();
-		Integer pages = (getRegistries() / getSize()) + 1;
-		
-		for (int i = 1; i <= pages; i++) {
-			list.add(i);
-		}
-		
-		return list;
+	public Integer getQtypages() {
+		return (getRegistries() / getSize()) + 1;
 	}
 	
 	public Integer getMinRow() {

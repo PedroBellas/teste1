@@ -4,16 +4,22 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Insert title here</title>
+		<title>Exames</title>
 		<s:head />
 	</head>
 	<body>
-		<form class="d-flex flex-column" action="exame/listar?page=1" method="POST">
+		<s:a href="avaliacao">Voltar</s:a>
+		
+		<s:a href="formularioExame">Criar Exame</s:a>
+		
+		<br />
+	
+		<form class="d-flex flex-column" action="listarExames" method="POST">
             <s:textfield cssClass="d-flex flex-column" name="id" label="Codigo" />
             
             <s:textfield cssClass="d-flex flex-column" name="name" label="Nome do exame" />
             
-            <s:select key="" list="#{'all':'Ambos','True':'Ativo', 'False':'Inativo'}" name="active" label="Status" />
+            <s:select list="#{'all':'Ambos','True':'Ativo', 'False':'Inativo'}" name="active" label="Status" />
             
             <s:submit cssClass="dark-green text-white" value="Buscar" />
         </form>
@@ -40,25 +46,23 @@
 						<s:property value="#exam.active"/>
 					</td>
 					<td>
-						<s:url var="testUrlId" namespace="/exame" action="atualizar">
-						    <s:param name="id" value="#exam.id" />
-						</s:url>
-						
-						<s:a errorText="Sorry your request had an error." preInvokeJS="confirm('Are you sure you want to delete this item?')" href="%{testUrlId}">
-							Att
+						<s:a href="revisarFormularioExame?id=%{#exam.id}">
+							Atualizar
 						</s:a>
 					</td>
 					<td>
-						delete
+						<s:a href="deletarExame?id=%{#exam.id}">
+							deletar
+						</s:a>
 					</td>
 				</tr>
 			</s:iterator>
 		</table>
 		
-		<s:a href="listar?page=%{page - 1}" disabled="%{page == 0}"><</s:a>
+		<s:a href="listarExames?page=%{page - 1}" disabled="%{page == 0}"><</s:a>
 		
-		<s:select list="pagination.getQtypages()" headerKey="page" value="page" onchange="listar?page=%{page - 1}"/>
+		<s:property value="page"/>/<s:property value="pagination.getQtypages()" />
 		
-		<s:a href="listar?page=%{page + 1}" disabled="%{page == pagination.getQtypages().size()}" >></s:a>
+		<s:a href="listarExames?page=%{page + 1}" disabled="%{page >= pagination.getQtypages()}" >></s:a>
 	</body>
 </html>
