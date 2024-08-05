@@ -50,6 +50,7 @@ public class UpdateEmployeeAction extends ActionSupport {
 	)
 	public String updateExam() {
 		try {
+			// TODO: Create a class to form validations
 			if (employee.getName() == null || employee.getName().equals("")) {
 				addFieldError("employee.name", "O nome do funcionário é obrigatorio");
 				return INPUT;
