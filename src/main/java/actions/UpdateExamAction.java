@@ -49,6 +49,7 @@ public class UpdateExamAction extends ActionSupport {
 	)
 	public String updateExam() {
 		try {
+			// TODO: Create a class to form validations
 			if (exam.getName() == null || exam.getName().equals("")) {
 				addFieldError("exam.name", "O nome do exame é obrigatorio");
 				return INPUT;

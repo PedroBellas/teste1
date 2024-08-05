@@ -55,6 +55,7 @@ public class CreateExamAction extends ActionSupport {
 	)
 	public String createExam() {
 		try {
+			// TODO: Create a class to form validations
 			Exam exam = new Exam(name, descriptionExam, descriptionExam1);
 			
 			ExamDaoImp.create(exam);
