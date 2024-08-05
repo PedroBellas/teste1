@@ -11,7 +11,7 @@ import dao.ExamDaoImp;
 import pojo.Exam;
 
 @Namespace("/exame")
-public class UpdateExamAction extends ActionSupport {
+public class DeleteExamAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 	
 	private Exam exam;
@@ -23,34 +23,22 @@ public class UpdateExamAction extends ActionSupport {
 	public void setExam(Exam exam) {
 		this.exam = exam;
 	}
-
-	@Action(value="/revisar", 
-		results = { 
-			@Result(name="success", location="/exame/form-update.jsp"),
-			@Result(name="input", location="/"),
-		}
-	)
-	public String getSelectedExam() {
-		try {
-			String id = ServletActionContext.getRequest().getParameter("id");
-			setExam(ExamDaoImp.findById(Integer.parseInt(id)));
-			
-			return SUCCESS;
-		} catch (Exception ex) {
-			System.out.println("erro: " + ex);
-			return INPUT;
-		}
-	}
 	
-	@Action(value="/atualizar", 
+	@Action(value="/deletar",
 			results = { 
 				@Result(name="success", location="/exame/listar", type="redirect"),
-				@Result(name="input", location="/exame/revisar"),
+				@Result(name="input", location="/exame/listar"),
 			}
 		)
 		public String updateExam() {
 			try {
-				ExamDaoImp.update(exam);
+				String id = ServletActionContext.getRequest().getParameter("id");
+				
+				System.out.println("id: " + id);
+				
+				ExamDaoImp.delete(Integer.parseInt(id));
+				
+				System.out.println("bau: ");
 				
 				return SUCCESS;
 			} catch (Exception ex) {
