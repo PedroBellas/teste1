@@ -4,18 +4,10 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import com.opensymphony.xwork2.validator.annotations.Validations;
-import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
-import dao.ExamDaoImp;
+import bean.ExamBeanImp;
 import pojo.Exam;
 
-@Validations(
-	requiredStrings = {
-		@RequiredStringValidator(type=ValidatorType.SIMPLE, fieldName="name", message="O nome do exame é obrigatorio")	
-	}
-)
 public class CreateExamAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 
@@ -53,12 +45,14 @@ public class CreateExamAction extends ActionSupport {
 			@Result(name="input", location="/exame/form.jsp") 
 		}
 	)
-	public String createExam() {
+	@Override
+	public String execute() {
 		try {
-			// TODO: Create a class to form validations
 			Exam exam = new Exam(name, descriptionExam, descriptionExam1);
 			
-			ExamDaoImp.create(exam);
+			ExamBeanImp ebi = new ExamBeanImp();
+			ebi.createExam(exam);
+			
 			return SUCCESS;
 		} catch (Exception ex) {
 			System.out.println("erro: " + ex);

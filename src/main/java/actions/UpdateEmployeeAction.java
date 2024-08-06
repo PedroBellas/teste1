@@ -23,7 +23,7 @@ public class UpdateEmployeeAction extends ActionSupport {
 	}
 
 	@Action(value="/revisarFormularioFuncionario", 
-		results = { 
+		results = {
 			@Result(name="success", location="/funcionario/form-update.jsp"),
 			@Result(name="input", location="/listarFuncionarios", type="redirect"),
 		}
@@ -31,6 +31,7 @@ public class UpdateEmployeeAction extends ActionSupport {
 	public String populateEmployee() {
 		try {
 			String id = ServletActionContext.getRequest().getParameter("id");
+
 			Employee employee = new Employee();
 			employee.setId(Integer.parseInt(id));
 			

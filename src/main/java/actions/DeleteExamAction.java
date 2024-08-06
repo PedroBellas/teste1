@@ -6,7 +6,8 @@ import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import dao.ExamDaoImp;
+import bean.ExamBeanImp;
+import pojo.Exam;
 
 public class DeleteExamAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
@@ -17,11 +18,16 @@ public class DeleteExamAction extends ActionSupport {
 			@Result(name="input", location="/listarExames"),
 		}
 	)
-	public String deleteExam() {
+	@Override
+	public String execute() {
 		try {
 			String id = ServletActionContext.getRequest().getParameter("id");
+
+			Exam exam = new Exam();
+			exam.setId(Integer.parseInt(id));
 			
-			ExamDaoImp.delete(Integer.parseInt(id));
+			ExamBeanImp ebi = new ExamBeanImp();
+			ebi.deleteExam(exam);
 			
 			return SUCCESS;
 		} catch (Exception ex) {

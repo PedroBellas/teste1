@@ -6,6 +6,7 @@ import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import bean.ExamBeanImp;
 import dao.ExamDaoImp;
 import pojo.Exam;
 
@@ -28,11 +29,15 @@ public class UpdateExamAction extends ActionSupport {
 			@Result(name="input", location="/listarExames", type="redirect"),
 		}
 	)
-	public String getSelectedExam() {
+	public String populateEmployee() {
 		try {
 			String id = ServletActionContext.getRequest().getParameter("id");
 			
-			setExam(ExamDaoImp.findById(Integer.parseInt(id)));
+			Exam exam = new Exam();
+			exam.setId(Integer.parseInt(id));
+			
+			ExamBeanImp ebi = new ExamBeanImp();
+			setExam(ebi.getSelectedExam(exam));
 			
 			return SUCCESS;
 		} catch (Exception ex) {
@@ -47,20 +52,11 @@ public class UpdateExamAction extends ActionSupport {
 			@Result(name="input", location="/exame/form-update.jsp"),
 		}
 	)
-	public String updateExam() {
+	@Override
+	public String execute() {
 		try {
-			// TODO: Create a class to form validations
-			if (exam.getName() == null || exam.getName().equals("")) {
-				addFieldError("exam.name", "O nome do exame é obrigatorio");
-				return INPUT;
-			}
-			
-			if (exam.getActive() == null) {
-				addFieldError("exam.active", "O status do exame é obrigatorio");
-				return INPUT;
-			}
-			
-			ExamDaoImp.update(exam);
+			ExamBeanImp ebi = new ExamBeanImp();
+			ebi.updateExam(exam);
 			
 			return SUCCESS;
 		} catch (Exception ex) {
