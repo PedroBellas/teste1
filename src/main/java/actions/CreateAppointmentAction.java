@@ -82,7 +82,7 @@ public class CreateAppointmentAction extends ActionSupport {
 	@Action(value="/criarConsulta",
 		results = { 
 			@Result(name="success", location="/listarConsultas", type="redirect"), 
-			@Result(name="input", location="/consulta/form.jsp") 
+			@Result(name="input", location="/formularioConsulta", type="redirect") 
 		}
 	)
 	@Override

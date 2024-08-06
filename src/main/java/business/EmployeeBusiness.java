@@ -2,6 +2,7 @@ package business;
 
 import java.util.List;
 
+import dao.AppointmentDaoImp;
 import dao.EmployeeDaoImp;
 import pojo.Employee;
 
@@ -38,6 +39,7 @@ public class EmployeeBusiness {
 	public void deleteEmployee(Employee employee) throws Exception {
 		try {
 			EmployeeDaoImp.delete(employee.getId());
+			AppointmentDaoImp.deleteByEmployee(employee.getId());
 		} catch (Exception ex) {
 			throw new Exception(ex);
 		}

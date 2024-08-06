@@ -14,7 +14,7 @@ public class EmployeeDaoImp {
 	public static void create(Employee employee) throws Exception {
 		Connection con = ConnectionFactory.getConnection();
 		PreparedStatement stmt = null;
-		String sql = new String("INSERT INTO funcionario (cd_funcionario, nm_funcionario) SELECT (MAX(cd_funcionario) + 1), ? FROM funcionario");
+		String sql = new String("INSERT INTO funcionario (cd_funcionario, nm_funcionario) SELECT IFNULL((MAX(cd_funcionario) + 1), 0), ? FROM funcionario");
 
 		try {
 			stmt = con.prepareStatement(sql);

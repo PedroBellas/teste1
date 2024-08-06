@@ -16,7 +16,7 @@ public class AppointmentDaoImp {
 	public static void create(Appointment appointment) throws Exception {
 		Connection con = ConnectionFactory.getConnection();
 		PreparedStatement stmt = null;
-		String sql = new String("INSERT INTO exame_realizado (cd_exame_realizado, cd_funcionario, cd_exame, dt_realizacao) SELECT MAX(cd_exame_realizado + 1), ?, ?, ? FROM exame_realizado");
+		String sql = new String("INSERT INTO exame_realizado (cd_exame_realizado, cd_funcionario, cd_exame, dt_realizacao) SELECT IFNULL(MAX(cd_exame_realizado + 1), 0), ?, ?, ? FROM exame_realizado");
 
 		try {
 			stmt = con.prepareStatement(sql);
@@ -100,6 +100,24 @@ public class AppointmentDaoImp {
 		}
 	}
 
+	public static void deleteByEmployee(Integer id) throws Exception {
+		Connection con = ConnectionFactory.getConnection();
+		PreparedStatement stmt = null;
+		String sql = new String("DELETE FROM exame_realizado WHERE cd_funcionario = ?");
+
+		try {
+			stmt = con.prepareStatement(sql);
+
+			stmt.setInt(1, id);
+			
+			stmt.executeUpdate();
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			ConnectionFactory.closeConnection(con, stmt);
+		}
+	}
+	
 	public static void delete(Integer id) throws Exception {
 		Connection con = ConnectionFactory.getConnection();
 		PreparedStatement stmt = null;

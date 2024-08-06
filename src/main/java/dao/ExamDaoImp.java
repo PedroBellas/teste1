@@ -16,7 +16,7 @@ public class ExamDaoImp {
 	public static void create(Exam user) throws Exception {
 		Connection con = ConnectionFactory.getConnection();
 		PreparedStatement stmt = null;
-		String sql = new String("INSERT INTO exame (cd_exame, nm_exame, ic_ativo, ds_detalhe_exame, ds_detalhe_exame1) SELECT (MAX(cd_exame) + 1), ?, ?, ?, ? FROM exame");
+		String sql = new String("INSERT INTO exame (cd_exame, nm_exame, ic_ativo, ds_detalhe_exame, ds_detalhe_exame1) SELECT IFNULL((MAX(cd_exame) + 1), 0), ?, ?, ?, ? FROM exame");
 
 		try {
 			stmt = con.prepareStatement(sql);
