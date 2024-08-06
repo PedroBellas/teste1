@@ -9,6 +9,7 @@ import pojo.Exam;
 public interface ExamBean {
 	public void createExam(Exam exam) throws Exception;
 	public List<Exam> listExam() throws Exception;
+	public List<Exam> listActiveExam() throws Exception;
 	public void updateExam(Exam exam) throws Exception;
 	public void deleteExam(Exam exam) throws Exception;
 	public Exam getSelectedExam(Exam exam) throws Exception;

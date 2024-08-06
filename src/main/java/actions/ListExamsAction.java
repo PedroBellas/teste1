@@ -76,6 +76,7 @@ public class ListExamsAction extends ActionSupport {
 			@Result(name="input", location="/"),
 		}
 	)
+	// TODO: Ajustar aqui dps
 	public String listExams() {
 		try {
 			boolean haveParams = false;

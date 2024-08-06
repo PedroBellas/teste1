@@ -7,7 +7,6 @@ import org.apache.struts2.convention.annotation.Result;
 import com.opensymphony.xwork2.ActionSupport;
 
 import bean.ExamBeanImp;
-import dao.ExamDaoImp;
 import pojo.Exam;
 
 public class UpdateExamAction extends ActionSupport {

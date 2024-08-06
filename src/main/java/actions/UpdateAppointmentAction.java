@@ -6,8 +6,21 @@ import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import bean.AppointmentBeanImp;
+import pojo.Appointment;
+
 public class UpdateAppointmentAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
+	
+	private String date;
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
 
 	@Action(value="/revisarFormularioConsulta", 
 		results = { 
@@ -18,8 +31,13 @@ public class UpdateAppointmentAction extends ActionSupport {
 	public String getSelectedAppointment() {
 		try {
 			String id = ServletActionContext.getRequest().getParameter("id");
+			Appointment appointment = new Appointment();
+			appointment.setId(Integer.parseInt(id));
 			
-			System.out.println("id: " + Integer.parseInt(id));
+			AppointmentBeanImp abi = new AppointmentBeanImp();
+			Appointment appoi = abi.getSelectedAppointment(appointment);
+			
+			setDate(appoi.getDate().toString());
 			
 			return SUCCESS;
 		} catch (Exception ex) {

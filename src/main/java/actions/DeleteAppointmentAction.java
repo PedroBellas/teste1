@@ -6,6 +6,9 @@ import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import bean.AppointmentBeanImp;
+import pojo.Appointment;
+
 public class DeleteAppointmentAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 	
@@ -18,8 +21,12 @@ public class DeleteAppointmentAction extends ActionSupport {
 	public String deleteAppointment() {
 		try {
 			String id = ServletActionContext.getRequest().getParameter("id");
+
+			Appointment appointment = new Appointment();
+			appointment.setId(Integer.parseInt(id));
 			
-			System.out.println("id: " + Integer.parseInt(id));
+			AppointmentBeanImp abi = new AppointmentBeanImp();
+			abi.deleteAppointment(appointment);
 			
 			return SUCCESS;
 		} catch (Exception ex) {

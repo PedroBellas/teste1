@@ -18,7 +18,7 @@ public class ExamBeanImp implements ExamBean {
 
 	@Override
 	public List<Exam> listExam() throws Exception {
-		// return examBusiness.createEmployee();
+		// TODO: listExams
 		return null;
 	}
 
@@ -35,6 +35,11 @@ public class ExamBeanImp implements ExamBean {
 	@Override
 	public Exam getSelectedExam(Exam exam) throws Exception {
 		return examBusiness.getSelectedExam(exam);
+	}
+
+	@Override
+	public List<Exam> listActiveExam() throws Exception {
+		return examBusiness.getSelectedExamActive();
 	}
 	
 	

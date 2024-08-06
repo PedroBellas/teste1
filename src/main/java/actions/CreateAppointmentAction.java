@@ -1,6 +1,6 @@
 package actions;
 
-import java.text.SimpleDateFormat;
+import java.sql.Date;
 import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -8,9 +8,9 @@ import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import dao.AppointmentDaoImp;
-import dao.EmployeeDaoImp;
-import dao.ExamDaoImp;
+import bean.AppointmentBeanImp;
+import bean.EmployeeBeanImp;
+import bean.ExamBeanImp;
 import pojo.Appointment;
 import pojo.Employee;
 import pojo.Exam;
@@ -70,8 +70,11 @@ public class CreateAppointmentAction extends ActionSupport {
 		}
 	)
 	public String renderFormCreateAppointment() throws Exception {
-		setEmployees(EmployeeDaoImp.findAll());
-		setExams(ExamDaoImp.findAllActives());
+		ExamBeanImp ebi = new ExamBeanImp();
+		setExams(ebi.listActiveExam());
+		
+		EmployeeBeanImp embi = new EmployeeBeanImp();
+		setEmployees(embi.listEmployees());
 		
 		return SUCCESS;
 	}
@@ -82,27 +85,19 @@ public class CreateAppointmentAction extends ActionSupport {
 			@Result(name="input", location="/consulta/form.jsp") 
 		}
 	)
-	public String createAppointment() {
+	@Override
+	public String execute() {
 		try {	
-			System.out.println("bau: " + idExam + " - " + idEmployee + " - " + date);
-			Appointment appointement = new Appointment();
-			
 			Exam exam = new Exam();
 			exam.setId(idExam);
-			
-			appointement.setExam(exam);
 			
 			Employee employee = new Employee();
 			employee.setId(idEmployee);
 			
-			appointement.setEmployee(employee);
-			
-			System.out.println("bau 2");
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			
-			// 			appointement.setDate(format.parse(date));
-			
-			AppointmentDaoImp.create(appointement);
+			Appointment appointement = new Appointment(null, exam, employee, Date.valueOf(date));
+
+			AppointmentBeanImp abi = new AppointmentBeanImp();
+			abi.createAppointment(appointement);
 			
 			return SUCCESS;
 		} catch (Exception ex) {

@@ -10,9 +10,9 @@
 
 	<body>
         <form class="d-flex flex-column" action="atualizarConsulta" method="POST">
-            <s:select key="" list="#{true:'Ativo', false:'Inativo'}" name="exam.active" label="Status" />
+			<s:textfield type="date" format="yyyy-MM-dd" name="date" label="Nova data da consulta" />
             
-            <s:submit cssClass="dark-green text-white" value="Atualizar Consulta" />
+            <s:submit cssClass="dark-green text-white" value="Alterar Consulta" />
         </form>
         
         <br />

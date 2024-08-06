@@ -52,6 +52,72 @@ public class AppointmentDaoImp {
 		}
 	}
 	
+	public static Appointment findById(Integer id) throws Exception {
+		Connection con = ConnectionFactory.getConnection();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = new String("SELECT cd_exame_realizado, cd_funcionario, cd_exame, dt_realizacao FROM exame_realizado WHERE cd_exame_realizado = ?");
+
+		try {
+			stmt = con.prepareStatement(sql);
+			
+			stmt.setInt(1, id);
+			
+			rs = stmt.executeQuery();
+			
+			rs.next();
+			
+			Employee employee = new Employee();
+			Exam exam = new Exam();
+			
+			employee.setId(rs.getInt("cd_funcionario"));
+			exam.setId(rs.getInt("cd_exame"));
+			Appointment appointment = new Appointment(rs.getInt("cd_exame_realizado"), exam, employee, rs.getDate("dt_realizacao"));
+			
+			return appointment;
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			ConnectionFactory.closeConnection(con, stmt, rs);
+		}
+	}
+	
+	public static void update(Appointment appointment) throws Exception {
+		Connection con = ConnectionFactory.getConnection();
+		PreparedStatement stmt = null;
+		String sql = new String("UPDATE exame_realizado SET dt_realizacao = ? WHERE cd_exame_realizado = ?");
+		try {
+			stmt = con.prepareStatement(sql);
+
+			stmt.setDate(1, appointment.getDate());
+			stmt.setInt(2, appointment.getId());
+			
+			stmt.executeUpdate();
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			ConnectionFactory.closeConnection(con, stmt);
+		}
+	}
+
+	public static void delete(Integer id) throws Exception {
+		Connection con = ConnectionFactory.getConnection();
+		PreparedStatement stmt = null;
+		String sql = new String("DELETE FROM exame_realizado WHERE cd_exame_realizado = ?");
+
+		try {
+			stmt = con.prepareStatement(sql);
+
+			stmt.setInt(1, id);
+			
+			stmt.executeUpdate();
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			ConnectionFactory.closeConnection(con, stmt);
+		}
+	}
+	
 	private static List<Appointment> descompressAppointmentFromResultSet(ResultSet rs) throws SQLException {
 		List<Appointment> appointments = new ArrayList<Appointment>();
 		while(rs.next()) {

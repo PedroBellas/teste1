@@ -1,5 +1,7 @@
 package business;
 
+import java.util.List;
+
 import dao.ExamDaoImp;
 import pojo.Exam;
 
@@ -14,9 +16,19 @@ public class ExamBusiness {
 		}
 	}
 	
+	// TODO: listExams
+	
 	public Exam getSelectedExam(Exam exam) throws Exception  {
 		try {
 			return ExamDaoImp.findById(exam.getId());
+		} catch (Exception ex) {
+			throw new Exception(ex);
+		}
+	}
+	
+	public List<Exam> getSelectedExamActive() throws Exception  {
+		try {
+			return ExamDaoImp.findAllActives();
 		} catch (Exception ex) {
 			throw new Exception(ex);
 		}

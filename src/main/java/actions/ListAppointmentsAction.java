@@ -7,7 +7,7 @@ import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import dao.AppointmentDaoImp;
+import bean.AppointmentBeanImp;
 import pojo.Appointment;
 
 public class ListAppointmentsAction extends ActionSupport {
@@ -29,9 +29,11 @@ public class ListAppointmentsAction extends ActionSupport {
 			@Result(name="input", location="/"),
 		}
 	)
-	public String listAppointments() {
+	@Override
+	public String execute() {
 		try {
-			setAppointments(AppointmentDaoImp.findAll());
+			AppointmentBeanImp ebi = new AppointmentBeanImp();
+			setAppointments(ebi.listAppointment());
 			
 			return SUCCESS;
 		} catch (Exception ex) {
