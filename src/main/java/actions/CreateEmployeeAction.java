@@ -5,7 +5,7 @@ import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import dao.EmployeeDaoImp;
+import bean.EmployeeBeanImp;
 import pojo.Employee;
 
 public class CreateEmployeeAction extends ActionSupport {
@@ -22,29 +22,20 @@ public class CreateEmployeeAction extends ActionSupport {
 	}
 
 	@Action(value="/criarFuncionario",
-	results = { 
-		@Result(name="success", location="/listarFuncionarios", type="redirect"), 
-		@Result(name="input", location="/funcionario/form.jsp") 
-	}
-)
-	public String createEmployee() {
+		results = { 
+			@Result(name="success", location="/listarFuncionarios", type="redirect"), 
+			@Result(name="input", location="/funcionario/form.jsp") 
+		}
+	)
+	@Override
+	public String execute() {
 		try {
-			// TODO: Create a class to form validations
-			if (name == null || name.equals("")) {
-				addFieldError("name", "O nome do funcionário é obrigatorio");
-				return INPUT;
-			}
-			
-			if (name.length() > 20) {
-				addFieldError("name", "O nome do funcionário deve ser menor que 20 caracteres");
-				return INPUT;
-			}
-			
 			Employee employee = new Employee();
-			
 			employee.setName(name);
 			
-			EmployeeDaoImp.create(employee);
+			EmployeeBeanImp ebi = new EmployeeBeanImp();
+			ebi.createEmployee(employee);
+			
 			return SUCCESS;
 		} catch (Exception ex) {
 			System.out.println("erro: " + ex);

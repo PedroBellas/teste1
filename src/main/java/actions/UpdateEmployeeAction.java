@@ -6,7 +6,7 @@ import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import dao.EmployeeDaoImp;
+import bean.EmployeeBeanImp;
 import pojo.Employee;
 
 public class UpdateEmployeeAction extends ActionSupport {
@@ -28,10 +28,14 @@ public class UpdateEmployeeAction extends ActionSupport {
 			@Result(name="input", location="/listarFuncionarios", type="redirect"),
 		}
 	)
-	public String getSelectedEmployee() {
+	public String populateEmployee() {
 		try {
 			String id = ServletActionContext.getRequest().getParameter("id");
-			setEmployee(EmployeeDaoImp.findById(Integer.parseInt(id)));
+			Employee employee = new Employee();
+			employee.setId(Integer.parseInt(id));
+			
+			EmployeeBeanImp ebi = new EmployeeBeanImp();
+			setEmployee(ebi.getSelectedEmployee(employee));
 			
 			return SUCCESS;
 		} catch (Exception ex) {
@@ -46,20 +50,11 @@ public class UpdateEmployeeAction extends ActionSupport {
 			@Result(name="input", location="/funcionario/form-update.jsp"),
 		}
 	)
-	public String updateEmployee() {
-		try {
-			// TODO: Create a class to form validations
-			if (employee.getName() == null || employee.getName().equals("")) {
-				addFieldError("employee.name", "O nome do funcionário é obrigatorio");
-				return INPUT;
-			}
-			
-			if (employee.getName().length() > 20) {
-				addFieldError("employee.name", "O nome do funcionário deve ser menor que 20 caracteres");
-				return INPUT;
-			}
-			
-			EmployeeDaoImp.update(employee);
+	@Override
+	public String execute() {
+		try {	
+			EmployeeBeanImp ebi = new EmployeeBeanImp();
+			ebi.updateEmployee(employee);
 			
 			return SUCCESS;
 		} catch (Exception ex) {

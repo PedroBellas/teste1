@@ -100,7 +100,7 @@ public class CreateAppointmentAction extends ActionSupport {
 			System.out.println("bau 2");
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			
-			appointement.setDate(format.parse(date));
+			// 			appointement.setDate(format.parse(date));
 			
 			AppointmentDaoImp.create(appointement);
 			

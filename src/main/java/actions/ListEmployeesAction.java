@@ -7,7 +7,7 @@ import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import dao.EmployeeDaoImp;
+import bean.EmployeeBeanImp;
 import pojo.Employee;
 
 public class ListEmployeesAction extends ActionSupport {
@@ -47,9 +47,11 @@ public class ListEmployeesAction extends ActionSupport {
 			@Result(name="input", location="/"),
 		}
 	)
-	public String listEmployees() {
+	@Override
+	public String execute() {
 		try {
-			setEmployees(EmployeeDaoImp.findAll());
+			EmployeeBeanImp ebi = new EmployeeBeanImp();
+			setEmployees(ebi.listEmployees());
 			
 			return SUCCESS;
 		} catch (Exception ex) {

@@ -6,7 +6,8 @@ import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import dao.EmployeeDaoImp;
+import bean.EmployeeBeanImp;
+import pojo.Employee;
 
 public class DeleteEmployeeAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
@@ -21,7 +22,11 @@ public class DeleteEmployeeAction extends ActionSupport {
 		try {
 			String id = ServletActionContext.getRequest().getParameter("id");
 			
-			EmployeeDaoImp.delete(Integer.parseInt(id));
+			Employee employee = new Employee();
+			employee.setId(Integer.parseInt(id));
+			
+			EmployeeBeanImp ebi = new EmployeeBeanImp();
+			ebi.deleteEmployee(employee);
 			
 			return SUCCESS;
 		} catch (Exception ex) {
